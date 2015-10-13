@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_logo_str" translatesAutoresizingMaskIntoConstraints="NO" id="kNE-ip-jtH">
+                                <rect key="frame" x="180" y="112" width="240" height="128"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="kNE-ip-jtH" secondAttribute="height" multiplier="15:8" id="4XJ-Gd-Mtt"/>
+                                    <constraint firstAttribute="width" secondItem="kNE-ip-jtH" secondAttribute="height" multiplier="15:8" id="cqd-N3-fBM"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="cqd-N3-fBM"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" red="1" green="0.98431372549019602" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="kNE-ip-jtH" firstAttribute="width" secondItem="kNE-ip-jtH" secondAttribute="height" multiplier="15:8" id="M7F-1k-1xf"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="kNE-ip-jtH" secondAttribute="bottom" constant="360" id="grE-Sa-qwp"/>
+                            <constraint firstItem="kNE-ip-jtH" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="92" id="kQG-Hp-Aq9"/>
+                            <constraint firstItem="kNE-ip-jtH" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="wxk-2F-bU0"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="default_logo_str" width="800" height="450"/>
+    </resources>
+</document>
