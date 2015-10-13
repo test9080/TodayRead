@@ -1,18 +1,18 @@
 //
-//  CNRootViewController.m
+//  CNUserCenterViewController.m
 //  TodayRead
 //
 //  Created by cn on 15/10/13.
 //  Copyright © 2015年 cn. All rights reserved.
 //
 
-#import "CNRootViewController.h"
+#import "CNUserCenterViewController.h"
 
-@interface CNRootViewController ()
+@interface CNUserCenterViewController ()
 
 @end
 
-@implementation CNRootViewController
+@implementation CNUserCenterViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

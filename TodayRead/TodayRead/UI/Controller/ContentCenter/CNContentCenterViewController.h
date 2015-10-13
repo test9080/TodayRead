@@ -1,5 +1,5 @@
 //
-//  CNRootViewController.h
+//  CNContentCenterViewController.h
 //  TodayRead
 //
 //  Created by cn on 15/10/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CNRootViewController : UIViewController
+@interface CNContentCenterViewController : UIViewController
 
 @end

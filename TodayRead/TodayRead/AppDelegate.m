@@ -9,11 +9,20 @@
 #import "AppDelegate.h"
 #import "CNWelcomeViewController.h"
 #import "CNUserManager.h"
+#import "JASidePanelController.h"
+#import "CNHomeViewController.h"
+#import "CNContentCenterViewController.h"
+#import "CNUserCenterViewController.h"
 
 @interface AppDelegate ()
 
 @property (strong, nonatomic) UIWindow *welcomeWindow;
 @property (strong, nonatomic) CNWelcomeViewController *welcomeViewController;
+
+@property (strong, nonatomic) JASidePanelController *sidePanelController;
+@property (strong, nonatomic) CNHomeViewController *homeViewController;
+@property (strong, nonatomic) CNContentCenterViewController *contentCenterViewController;
+@property (strong, nonatomic) CNUserCenterViewController *userCenterViewController;
 
 @end
 
@@ -25,6 +34,9 @@
     
     // user manager
     [[CNUserManager sharedInstance] addUseCount];
+    
+    // init ui
+    [self configUIFramework];
     
     // show welcome
     [self showWelcomeView];
@@ -76,6 +88,33 @@
                                   self.welcomeWindow = nil;
                                   self.welcomeViewController = nil;
                               }];
+}
+
+#pragma mark - ui framework
+
+- (void)configUIFramework
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    self.sidePanelController = [[JASidePanelController alloc] init];
+    self.sidePanelController.shouldDelegateAutorotateToVisiblePanel = NO;
+    
+    UIStoryboard *board = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    // left
+    self.contentCenterViewController = [board instantiateViewControllerWithIdentifier:@"CNContentCenterViewController"];
+    self.sidePanelController.leftPanel = self.contentCenterViewController;
+    
+    // center
+    self.homeViewController = [board instantiateViewControllerWithIdentifier:@"CNHomeViewController"];
+    self.sidePanelController.centerPanel = [[UINavigationController alloc] initWithRootViewController:self.homeViewController];
+    
+    // right
+    self.userCenterViewController = [board instantiateViewControllerWithIdentifier:@"CNUserCenterViewController"];
+    self.sidePanelController.rightPanel = self.userCenterViewController;
+    
+    self.window.rootViewController = self.sidePanelController;
+    [self.window makeKeyAndVisible];
 }
 
 @end
