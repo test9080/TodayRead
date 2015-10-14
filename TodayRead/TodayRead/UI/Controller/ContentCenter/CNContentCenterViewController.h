@@ -10,4 +10,7 @@
 
 @interface CNContentCenterViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UILabel *useCountLabel;
+@property (weak, nonatomic) IBOutlet UITableView *contentTableView;
+
 @end

@@ -11,8 +11,12 @@
 #import "JASidePanelController.h"
 #import "UIViewController+JASidePanel.h"
 #import "CNHomePageCollectionViewCell.h"
+#import "GGTask.h"
+#import "GGEngine.h"
+#import "GGJson.h"
+#import "GGDataManager.h"
 
-@interface CNHomeViewController ()
+@interface CNHomeViewController () <GGDataObserver>
 
 @end
 
@@ -23,6 +27,8 @@
     // Do any additional setup after loading the view.
     
     [self configNavigationBar];
+    
+    [self requestListData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,18 +92,15 @@
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 9;
+    return [[[self getListData] getJsonForKey:@"stories"] count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     CNHomePageCollectionViewCell *cell = (CNHomePageCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CNHomePageCollectionViewCell" forIndexPath:indexPath];
     
     // Configure the cell
-    cell.backgroundColor = [UIColor colorWithRed:(CGFloat)(rand() % 255) / 255.0
-                                           green:(CGFloat)(rand() % 255) / 255.0
-                                            blue:(CGFloat)(rand() % 255) / 255.0
-                                           alpha:1.0];
-    
+    GGJson *json = [[[self getListData] getJsonForKey:@"stories"] getJsonForIndex:(int)indexPath.row];
+    [cell setInfo:json];
     
     return cell;
 }
@@ -106,18 +109,19 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake([self.class divideFromTheMiddle:collectionView.frame.size.width - 20 divisor:2 receiveRedundancy:(indexPath.row + 1) % 2 == 0],
-                      [self.class divideFromTheMiddle:self.view.frame.size.height - 64 divisor:2.5 receiveRedundancy:NO]);
+    CGFloat width = [self.class divideFromTheMiddle:collectionView.frame.size.width - 36 divisor:2 receiveRedundancy:(indexPath.row + 1) % 2 == 0];
+    return CGSizeMake(width,
+                      width / 0.618);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    return 10;
+    return 12;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-    return 10;
+    return 5;
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -153,6 +157,56 @@
     }
     
     return (NSUInteger)temp;
+}
+
+#pragma mark - net help
+
+// 发起网络请求
+- (void)requestListData
+{
+    //    NSString *listType = @"电视剧";
+    
+    // 创建Task，task关联data，请求类型（刷新还是查看更多），指定dataId（dataID可以用于区分url相同，但参数不同的url请求）
+    GGTask *task = [GGTask createWithSender:self
+                            forDataCategory:@"ZhihuListData"
+                             forRequestType:GGDATA_REQUEST_REFRESH
+                                  forDataID:0];
+    //    task.argDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:listType, @"category", nil];
+    
+    // 将task加入引擎，由引擎实现网络传输，后续的json解析等
+    [[GGEngine sharedInstance] addTask:task];
+    
+    // 添加观察者
+    [[GGEngine sharedInstance] addDataObserver:self forDataCategory:@"ZhihuListData"];
+}
+
+// 取出data数据
+- (GGJson *)getListData
+{
+    GGJson *json = [[[GGDataManager sharedInstance] getGGDataForCategory:@"ZhihuListData"] getGGJsonObjectForID:0];
+    return json;
+}
+
+// 处理网络请求回调
+#pragma mark - GGDataObserver
+
+- (void)requestSuccessForTask:(GGTask *)task // 成功回调
+{
+    if ([@"ZhihuListData" isEqualToString:task.dataCategory]) // 判断是哪个data发起的请求
+    {
+        [self.articleCollectionView reloadData];
+        //        GGJson *json = [self getListData];
+        //        int a = 0;
+    }
+}
+
+- (void)requestFailedForTask:(GGTask *)task withError:(NSError*) error // 失败回调
+{
+    if ([@"ZhihuListData" isEqualToString:task.dataCategory])
+    {
+        //        GGJson *json = [self getListData];
+        //        int a = 0;
+    }
 }
 
 @end
